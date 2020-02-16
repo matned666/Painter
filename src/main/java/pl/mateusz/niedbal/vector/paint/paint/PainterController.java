@@ -12,10 +12,13 @@ import javafx.stage.Stage;
 import pl.mateusz.niedbal.vector.paint.paint.shapes.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 public class PainterController {
 
@@ -42,15 +45,12 @@ public class PainterController {
     private Shape currentShape;
     private GraphicsContext context;
     private Tool currentTool;
-
-    public PainterController() {
-    }
-
     private  double startX;
     private  double startY;
     private  double endX;
     private  double endY;
-
+    public PainterController() {
+    }
 
     public void initialize(){
         multiply = false;
@@ -184,8 +184,68 @@ public class PainterController {
         }
     }
 
-    public void loadAction() {
+    public void loadAction() throws FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("YOLO files (*.yolo)", "*.yolo");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showOpenDialog(new Stage());
+        String path;
+        List<String> temp = new LinkedList<>();
+        if (file != null) {
+            path = file.getAbsolutePath();
+        Scanner sc = new Scanner(file);
+        while (sc.hasNextLine()) {
+            temp.add(sc.nextLine());
+          }
+        }
+        readFile(temp);
+    }
 
+    private void readFile(List<String> content) {
+        List<String[]> list = new LinkedList<>();
+        for (int i = 0; i < content.size(); i++) {
+            System.out.println(content.get(i));
+                list.add(content.get(i).split(";"));
+               if(list.get(i)[0].equalsIgnoreCase("line")) currentTool = Tool.LINE;
+               else if(list.get(i)[0].equalsIgnoreCase("rectangle")) currentTool = Tool.RECTANGLE;
+               startX = Double.parseDouble(list.get(i)[1]);
+               startY = Double.parseDouble(list.get(i)[2]);
+               endX = Double.parseDouble(list.get(i)[3]);
+               endY = Double.parseDouble(list.get(i)[4]);
+               prepareShape();
+            applyShape();
+            refreshCanvas();
 
+//                switch (list.get(i)[0]) {
+//                    case "Line":
+//                        currentShape =
+//                                new Line(Double.parseDouble(list.get(i)[1]),Double.parseDouble(list.get(i)[2]),
+//                                        Double.parseDouble(list.get(i)[3]),Double.parseDouble(list.get(i)[4]));
+//                        break;
+//
+//                    case "Rectangle":
+//                        currentShape =
+//                                new Rectangle(Double.parseDouble(list.get(i)[1]),Double.parseDouble(list.get(i)[2]),
+//                                        Double.parseDouble(list.get(i)[3]),Double.parseDouble(list.get(i)[4]));
+//                        break;
+//                    case "Triangle":
+//                   currentShape =
+//                                new Triangle(Double.parseDouble(list.get(i)[1]),Double.parseDouble(list.get(i)[2]),
+//                                        Double.parseDouble(list.get(i)[5]),Double.parseDouble(list.get(i)[6]));
+//                        break;
+//                    case "Circle":
+//                   currentShape =
+//                                new Circle(Double.parseDouble(list.get(i)[1]),Double.parseDouble(list.get(i)[2]),
+//                                        Double.parseDouble(list.get(i)[3]),Double.parseDouble(list.get(i)[4]));
+//                        break;
+//                    case "Ellipse":
+//                   currentShape =
+//                                new Ellipse(Double.parseDouble(list.get(i)[1]),Double.parseDouble(list.get(i)[2]),
+//                                        Double.parseDouble(list.get(i)[3]),Double.parseDouble(list.get(i)[4]));
+//                        break;
+//                    default:
+//                }
+//            prepareShape();
+        }
     }
 }
