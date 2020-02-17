@@ -8,12 +8,20 @@ public class Circle extends Shape{
     private  double startY;
     private  double endX;
     private  double endY;
+    private  double startX_FOR_SAVE;
+    private  double startY_FOR_SAVE;
+    private  double endX_FOR_SAVE;
+    private  double endY_FOR_SAVE;
 
     public Circle(double startX, double startY, double endX, double endY) {
         this.startX = Math.min(startX,endX);
         this.startY = Math.min(startY,endY);
         this.endX = Math.abs(endX-startX);
         this.endY = Math.abs(endY-startY);
+        startX_FOR_SAVE = startX;
+        startY_FOR_SAVE = startY;
+        endX_FOR_SAVE = endX;
+        endY_FOR_SAVE = endY;
     }
 
     @Override
@@ -26,10 +34,10 @@ public class Circle extends Shape{
     public String getData() {
         StringBuilder builder = new StringBuilder();
         builder.append("Circle;");
-        builder.append(startX).append(";");
-        builder.append(startY).append(";");
-        builder.append(endX).append(";");
-        builder.append(endY).append(";");
+        builder.append(startX_FOR_SAVE).append(";");
+        builder.append(startY_FOR_SAVE).append(";");
+        builder.append(endX_FOR_SAVE).append(";");
+        builder.append(endY_FOR_SAVE).append(";");
         builder.append(fillColor).append(";");
         builder.append(strokeColor).append(";");
         return builder.toString();

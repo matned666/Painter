@@ -15,10 +15,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class PainterController {
 
@@ -53,21 +50,25 @@ public class PainterController {
     }
 
     public void initialize(){
+        currentTool = Tool.LINE;
         multiply = false;
         shapeList = new LinkedList<>();
         fillColorTool.setValue(Color.RED);
         strokeColorTool.setValue(Color.BLACK);
-        currentShape = new Line(startX, startY, endX, endY);
 
-        System.out.println("Hello");
+
         refreshCanvas();
         canvas.setOnMousePressed(event -> {
+
+            System.out.println(fillColorTool.getValue());
             startX = event.getX();
             startY = event.getY();
 //            System.out.printf("MPressed: start: x=%f, y=%f \n",startX,startY);
         });
 
         canvas.setOnMouseReleased(event -> {
+
+
             endX = event.getX();
             endY = event.getY();
 //            System.out.printf("MReleased: end: x=%f, y=%f \n",endX,endY);
@@ -78,6 +79,7 @@ public class PainterController {
         });
 
         canvas.setOnMouseDragged(event -> {
+
             endX = event.getX();
             endY = event.getY();
 //            System.out.printf("MDragged: actual: x=%f, y=%f \n",endX,endY);
@@ -89,15 +91,12 @@ public class PainterController {
 
     private void applyShape() {
         shapeList.add(currentShape);
-//        currentShape =
     }
 
     private void prepareShape() {
         currentShape = shape();
         currentShape.setStrokeColor(strokeColorTool.getValue());
         currentShape.setFillColor(fillColorTool.getValue());
-
-
     }
 
     private Shape shape(){
@@ -161,11 +160,9 @@ public class PainterController {
                 .map(Shape::getData)
                 .reduce((acc, text) -> acc + "\n" + text);
         if (reduce.isPresent()) {
-            System.out.println(reduce.get());
             FileChooser fileChooser = new FileChooser();
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("YOLO files (*.yolo)", "*.yolo");
             fileChooser.getExtensionFilters().add(extFilter);
-
             File file = fileChooser.showSaveDialog(new Stage());
             if (file != null) {
                 saveTextToFile(reduce.get(), file);
@@ -189,63 +186,41 @@ public class PainterController {
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("YOLO files (*.yolo)", "*.yolo");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(new Stage());
-        String path;
-        List<String> temp = new LinkedList<>();
+        List<String[]> temp = new LinkedList<>();
         if (file != null) {
-            path = file.getAbsolutePath();
         Scanner sc = new Scanner(file);
         while (sc.hasNextLine()) {
-            temp.add(sc.nextLine());
+            if(sc.hasNextLine())temp.add(sc.nextLine().split(";"));
+            else temp.add(sc.next().split(";"));
           }
         }
         readFile(temp);
     }
 
-    private void readFile(List<String> content) {
-        List<String[]> list = new LinkedList<>();
-        for (int i = 0; i < content.size(); i++) {
-            System.out.println(content.get(i));
-                list.add(content.get(i).split(";"));
-               if(list.get(i)[0].equalsIgnoreCase("line")) currentTool = Tool.LINE;
-               else if(list.get(i)[0].equalsIgnoreCase("rectangle")) currentTool = Tool.RECTANGLE;
-               startX = Double.parseDouble(list.get(i)[1]);
-               startY = Double.parseDouble(list.get(i)[2]);
-               endX = Double.parseDouble(list.get(i)[3]);
-               endY = Double.parseDouble(list.get(i)[4]);
-               prepareShape();
+    private void readFile(List<String[]> list) {
+        for (String[] savedElement : list) {
+            StringBuilder fillTemp = new StringBuilder();
+            StringBuilder strokeTemp = new StringBuilder();
+            for(int i = 2; i < 8; i++) {
+                fillTemp.append(savedElement[5].charAt(i));
+                strokeTemp.append(savedElement[6].charAt(i));
+            }
+            savedElement[5] = fillTemp.toString();
+            savedElement[6] = strokeTemp.toString();
+            if (savedElement[0].equalsIgnoreCase("line")) currentTool = Tool.LINE;
+            else if (savedElement[0].equalsIgnoreCase("rectangle")) currentTool = Tool.RECTANGLE;
+            else if (savedElement[0].equalsIgnoreCase("triangle")) currentTool = Tool.TRIANGLE;
+            else if (savedElement[0].equalsIgnoreCase("circle")) currentTool = Tool.CIRCLE;
+            else if (savedElement[0].equalsIgnoreCase("ellipse")) currentTool = Tool.ELLIPSE;
+            startX = Double.parseDouble(savedElement[1]);
+            startY = Double.parseDouble(savedElement[2]);
+            endX = Double.parseDouble(savedElement[3]);
+            endY = Double.parseDouble(savedElement[4]);
+            currentShape = shape();
+            currentShape.setStrokeColor(Color.valueOf(savedElement[6]));
+            currentShape.setFillColor(Color.valueOf(savedElement[5]));
             applyShape();
             refreshCanvas();
-
-//                switch (list.get(i)[0]) {
-//                    case "Line":
-//                        currentShape =
-//                                new Line(Double.parseDouble(list.get(i)[1]),Double.parseDouble(list.get(i)[2]),
-//                                        Double.parseDouble(list.get(i)[3]),Double.parseDouble(list.get(i)[4]));
-//                        break;
-//
-//                    case "Rectangle":
-//                        currentShape =
-//                                new Rectangle(Double.parseDouble(list.get(i)[1]),Double.parseDouble(list.get(i)[2]),
-//                                        Double.parseDouble(list.get(i)[3]),Double.parseDouble(list.get(i)[4]));
-//                        break;
-//                    case "Triangle":
-//                   currentShape =
-//                                new Triangle(Double.parseDouble(list.get(i)[1]),Double.parseDouble(list.get(i)[2]),
-//                                        Double.parseDouble(list.get(i)[5]),Double.parseDouble(list.get(i)[6]));
-//                        break;
-//                    case "Circle":
-//                   currentShape =
-//                                new Circle(Double.parseDouble(list.get(i)[1]),Double.parseDouble(list.get(i)[2]),
-//                                        Double.parseDouble(list.get(i)[3]),Double.parseDouble(list.get(i)[4]));
-//                        break;
-//                    case "Ellipse":
-//                   currentShape =
-//                                new Ellipse(Double.parseDouble(list.get(i)[1]),Double.parseDouble(list.get(i)[2]),
-//                                        Double.parseDouble(list.get(i)[3]),Double.parseDouble(list.get(i)[4]));
-//                        break;
-//                    default:
-//                }
-//            prepareShape();
         }
     }
 }

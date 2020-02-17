@@ -10,6 +10,10 @@ public class Triangle extends Shape {
     private  double midY;
     private  double endX;
     private  double endY;
+    private  double startX_FOR_SAVE;
+    private  double startY_FOR_SAVE;
+    private  double endX_FOR_SAVE;
+    private  double endY_FOR_SAVE;
 
     public Triangle(double startX, double startY, double endX, double endY) {
         this.startX = startX;
@@ -18,6 +22,10 @@ public class Triangle extends Shape {
         this.endY = startY;
         midX = startX+((endX-startX)/2);
         midY = endY;
+        startX_FOR_SAVE = startX;
+        startY_FOR_SAVE = startY;
+        endX_FOR_SAVE = endX;
+        endY_FOR_SAVE = endY;
     }
 
     @Override
@@ -37,46 +45,12 @@ public class Triangle extends Shape {
     public String getData() {
         StringBuilder builder = new StringBuilder();
         builder.append("Triangle;");
-        builder.append(startX).append(";");
-        builder.append(startY).append(";");
-        builder.append(midX).append(";");
-        builder.append(midY).append(";");
-        builder.append(endX).append(";");
-        builder.append(endY).append(";");
+        builder.append(startX_FOR_SAVE).append(";");
+        builder.append(startY_FOR_SAVE).append(";");
+        builder.append(endX_FOR_SAVE).append(";");
+        builder.append(endY_FOR_SAVE).append(";");
         builder.append(fillColor).append(";");
         builder.append(strokeColor).append(";");
         return builder.toString();
-    }
-
-    public double getStartX() {
-        return startX;
-    }
-
-    public void setStartX(double startX) {
-        this.startX = startX;
-    }
-
-    public double getStartY() {
-        return startY;
-    }
-
-    public void setStartY(double startY) {
-        this.startY = startY;
-    }
-
-    public double getEndX() {
-        return endX;
-    }
-
-    public void setEndX(double endX) {
-        this.endX = endX;
-    }
-
-    public double getEndY() {
-        return endY;
-    }
-
-    public void setEndY(double endY) {
-        this.endY = endY;
     }
 }
