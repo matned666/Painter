@@ -17,28 +17,36 @@
          <left>
             <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="lineTool" mnemonicParsing="false" onAction="#changeTool" prefHeight="80.0" prefWidth="100.0" text="Line">
+                  <Button fx:id="lineTool" mnemonicParsing="false" onAction="#changeTool" prefHeight="60.0" prefWidth="100.0" text="Line">
                      <font>
                         <Font name="System Bold" size="22.0" />
                      </font></Button>
-                  <Button fx:id="rectangleTool" mnemonicParsing="false" onAction="#changeTool" prefHeight="80.0" prefWidth="100.0" text="Rect">
+                  <Button fx:id="rectangleTool" mnemonicParsing="false" onAction="#changeTool" prefHeight="60.0" prefWidth="100.0" text="Rect">
                      <font>
                         <Font name="System Bold" size="22.0" />
                      </font></Button>
-                  <Button fx:id="triangleTool" mnemonicParsing="false" onAction="#changeTool" prefHeight="80.0" prefWidth="100.0" text="Triang">
+                  <Button fx:id="triangleTool" mnemonicParsing="false" onAction="#changeTool" prefHeight="60.0" prefWidth="100.0" text="Triang">
                      <font>
                         <Font name="System Bold" size="22.0" />
                      </font></Button>
-                  <Button fx:id="circleTool" mnemonicParsing="false" onAction="#changeTool" prefHeight="80.0" prefWidth="100.0" text="Circle">
+                  <Button fx:id="circleTool" mnemonicParsing="false" onAction="#changeTool" prefHeight="60.0" prefWidth="100.0" text="Circle">
                      <font>
                         <Font name="System Bold" size="22.0" />
                      </font></Button>
-                  <Button fx:id="ellipseTool" mnemonicParsing="false" onAction="#changeTool" prefHeight="80.0" prefWidth="100.0" text="Ellipse">
+                  <Button fx:id="ellipseTool" mnemonicParsing="false" onAction="#changeTool" prefHeight="60.0" prefWidth="100.0" text="Ellipse">
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font></Button>
+                  <Button fx:id="starTool" mnemonicParsing="false" onAction="#changeTool" prefHeight="60.0" prefWidth="100.0" text="Star">
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font></Button>
+                  <Button fx:id="pointTool" mnemonicParsing="false" onAction="#changeTool" prefHeight="60.0" prefWidth="100.0" text="Point">
                      <font>
                         <Font name="System Bold" size="22.0" />
                      </font></Button>
                   <Pane prefHeight="30.0" prefWidth="100.0" />
-                  <Button fx:id="multiplyTool1" mnemonicParsing="false" onAction="#multiplyAll" prefHeight="80.0" prefWidth="100.0" text="MULTI">
+                  <Button fx:id="multiplyTool1" mnemonicParsing="false" onAction="#multiplyAll" prefHeight="60.0" prefWidth="100.0" text="MULTI">
                      <font>
                         <Font name="System Bold" size="22.0" />
                      </font>

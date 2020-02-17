@@ -21,6 +21,12 @@ public class PainterController {
 
 
     @FXML
+    public Button starTool;
+    @FXML
+    public Button multiplyTool1;
+    @FXML
+    public Button pointTool;
+    @FXML
     private Button lineTool;
     @FXML
     private Button rectangleTool;
@@ -46,12 +52,16 @@ public class PainterController {
     private  double startY;
     private  double endX;
     private  double endY;
+
+    private boolean dragMe;
+
     public PainterController() {
     }
 
     public void initialize(){
         currentTool = Tool.LINE;
         multiply = false;
+        dragMe = false;
         shapeList = new LinkedList<>();
         fillColorTool.setValue(Color.RED);
         strokeColorTool.setValue(Color.BLACK);
@@ -59,8 +69,6 @@ public class PainterController {
 
         refreshCanvas();
         canvas.setOnMousePressed(event -> {
-
-            System.out.println(fillColorTool.getValue());
             startX = event.getX();
             startY = event.getY();
 //            System.out.printf("MPressed: start: x=%f, y=%f \n",startX,startY);
@@ -82,9 +90,14 @@ public class PainterController {
 
             endX = event.getX();
             endY = event.getY();
+
+            if(dragMe){
+                startX = event.getX();
+                startY = event.getY();
+            }
 //            System.out.printf("MDragged: actual: x=%f, y=%f \n",endX,endY);
             prepareShape();
-            if (multiply) applyShape();
+            if (multiply || dragMe) applyShape();
             refreshCanvas();
         });
     }
@@ -103,15 +116,26 @@ public class PainterController {
             switch(currentTool) {
                 default:
                 case LINE:
+                    dragMe = false;
                     return new Line(startX, startY, endX, endY);
                 case RECTANGLE:
+                    dragMe = false;
                     return new Rectangle(startX, startY, endX, endY);
                 case TRIANGLE:
+                    dragMe = false;
                     return new Triangle(startX, startY, endX, endY);
                 case CIRCLE:
+                    dragMe = false;
                     return new Circle(startX, startY, endX, endY);
                 case ELLIPSE:
+                    dragMe = false;
                     return new Ellipse(startX, startY, endX, endY);
+                case STAR:
+                    dragMe = false;
+                    return new Star(startX, startY, endX, endY);
+                case POINT:
+                    dragMe = true;
+                    return new Point(startX, startY);
             }
         }
 
@@ -141,6 +165,10 @@ public class PainterController {
             currentTool = Tool.ELLIPSE;
         }else if(source ==triangleTool){
             currentTool = Tool.TRIANGLE;
+        }else if(source ==starTool){
+            currentTool = Tool.STAR;
+        }else if(source ==pointTool){
+            currentTool = Tool.POINT;
         }else{
             currentTool = Tool.NO_TOOL;
         }
@@ -212,6 +240,8 @@ public class PainterController {
             else if (savedElement[0].equalsIgnoreCase("triangle")) currentTool = Tool.TRIANGLE;
             else if (savedElement[0].equalsIgnoreCase("circle")) currentTool = Tool.CIRCLE;
             else if (savedElement[0].equalsIgnoreCase("ellipse")) currentTool = Tool.ELLIPSE;
+            else if (savedElement[0].equalsIgnoreCase("star")) currentTool = Tool.STAR;
+            else if (savedElement[0].equalsIgnoreCase("point")) currentTool = Tool.POINT;
             startX = Double.parseDouble(savedElement[1]);
             startY = Double.parseDouble(savedElement[2]);
             endX = Double.parseDouble(savedElement[3]);

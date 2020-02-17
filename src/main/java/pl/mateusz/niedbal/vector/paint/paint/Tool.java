@@ -7,5 +7,6 @@ public enum Tool {
     ELLIPSE,
     TRIANGLE,
     STAR,
+    POINT,
     NO_TOOL
 }
